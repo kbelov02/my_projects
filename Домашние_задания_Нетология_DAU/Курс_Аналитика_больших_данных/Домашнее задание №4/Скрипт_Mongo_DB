@@ -1,0 +1,9 @@
+use sales
+db.sales.insertMany([{name: 'Шампунь', category: 'Гигиена', price: 300, qty: 23}, 
+{name: 'Мыло', category: 'Гигиена', price: 123, qty: 18}, 
+{name: 'Сковорода', category: 'Посуда', price: 1300, qty: 12}, 
+{name: 'Кастрюля', category: 'Посуда', price: 2700, qty: 9}])
+db.sales.find()
+db.sales.aggregate( { $group: {_id: '$category', total: {$sum: {$multiply: ['$price', '$qty']}}}}) -- подсчет остаточной стоимости товаров в каждой категории
+db.sales.updateOne({name: 'Кастрюля'}, {$inc: {qty: -1} } ) -- уменьшить количество товара на единицу
+db.sales.find().sort({price: -1}).limit(2) -- вывод двух самых дорогих товаров
